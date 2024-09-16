@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Comments{% endblock %}
+
+{% block content %}
+    <h2>Comments for "{{ post.title }}"</h2>
+    <ul>
+        {% for comment in comments %}
+            <li><strong>{{ comment.comment_author }}:</strong> {{ comment.content }}</li>
+        {% empty %}
+            <li>No comments yet.</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'comment-create' post_pk=post.id %}">Add a Comment</a>
+    <a href="{% url 'posts-list' %}">Back to Post List</a>
+{% endblock %}

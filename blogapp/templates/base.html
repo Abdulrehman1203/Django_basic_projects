@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Blog{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'main.css' %}">
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="{% url 'index' %}">My Blog</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'posts-list' %}">Home</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'post-create' %}">Create Post</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'post-update' pk=user.pk %}">Update Post</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'post-delete' pk=user.pk %}">Delete Post</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'comment-create' post_pk=user.pk %}">Add Comment</a>
+                        </li>
+                        <li class="nav-item">
+                            <form action="{% url 'logout' %}" method="post" class="form-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-danger">Logout</button>
+                            </form>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link">Welcome, {{ user.username }}</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login' %}">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'register' %}">Register</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mt-4">
+        {% block content %}
+        <!-- Main content will go here -->
+        {% endblock %}
+    </main>
+
+    <footer class="bg-light text-center py-3">
+        <div class="container">
+            <p>&copy; 2024 My Blog. Created by AR.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
